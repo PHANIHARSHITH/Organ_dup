@@ -6,6 +6,13 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder, StandardScaler # Import necessary scikit-learn classes
 
+# --- Scikit-learn 1.8.0 Compatibility Patch ---
+# Old models pickled in scikit-learn 1.6.1 use this class which was removed.
+import sklearn.compose._column_transformer as _c
+class _RemainderColsList(list): pass
+_c._RemainderColsList = _RemainderColsList
+# ----------------------------------------------
+
 app = Flask(__name__)
 
 # --- Model Loading Configuration ---
@@ -295,30 +302,37 @@ def predict_lung():
         return render_template("result.html", result="Lung model is not available.", organ=organ)
         
     try:
-        # --- Feature Extraction & Preprocessing (Target: 11 features) ---
         form_data = request.form.to_dict()
-        input_df = pd.DataFrame([form_data])
+        
+        # Exact 21 features required by the model in order
+        expected_features = [
+            'Donor_ID', 'Donor_Age', 'Donor_Gender', 'Donor_Blood_Type',
+            'Donor_HLA_A', 'Donor_HLA_B', 'Donor_HLA_DR', 'Donor_Smoking_History',
+            'Donor_Medical_History', 'Donor_Lung_Capacity', 'Recipient_ID',
+            'Recipient_Age', 'Recipient_Gender', 'Recipient_Blood_Type',
+            'Recipient_HLA_A', 'Recipient_HLA_B', 'Recipient_HLA_DR',
+            'Recipient_Medical_History', 'Recipient_Oxygen_Support',
+            'Recipient_Lung_Capacity', 'Recipient_Urgency_Level',
+            'Compatibility_Score'
+        ]
+        
+        # Build the exact array to match the model pipeline expected format
+        input_data = {}
+        for feat in expected_features:
+            val = form_data.get(feat, '')
+            # Numeric fields
+            if feat in ['Donor_Age', 'Recipient_Age']:
+                input_data[feat] = int(val) if val else 0
+            elif feat in ['Donor_Lung_Capacity', 'Recipient_Lung_Capacity', 'Compatibility_Score']:
+                input_data[feat] = float(val) if val else 0.0
+            else:
+                input_data[feat] = val
 
-        # Define categories for one-hot encoding
-        diagnoses = ['COPD', 'IPF', 'CF', 'PAH', 'Other']
-        input_df['primary_diagnosis'] = pd.Categorical(input_df['primary_diagnosis'], categories=diagnoses)
-        diagnosis_dummies = pd.get_dummies(input_df['primary_diagnosis'], prefix='diag')
-
-        # Encode binary feature
-        input_df['smoking_history'] = input_df['smoking_history'].apply(lambda x: 1 if x == 'Yes' else 0)
-
-        # Process numerical features
-        numerical_cols = ['age', 'bmi', 'fev1', 'oxygen_requirement', 'pulmonary_pressure']
-        for col in numerical_cols:
-            input_df[col] = pd.to_numeric(input_df[col], errors='coerce').fillna(0)
-            
-        # Combine all features
-        final_df = pd.concat([
-            input_df[numerical_cols],
-            input_df[['smoking_history']],
-            diagnosis_dummies
-        ], axis=1)
-        features = [final_df.to_numpy().flatten()]
+        input_df = pd.DataFrame([input_data])
+        
+        # The scikit-learn pipeline (model) handles its own preprocessing/OneHotEncoding.
+        # We just need to pass the raw DataFrame mapped to `expected_features`.
+        features = input_df
 
         # --- Prediction ---
         prediction = model.predict(features)[0]
