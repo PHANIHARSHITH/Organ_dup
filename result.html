@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Liver Prediction</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='prediction.css') }}">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Header -->
+  <div class="header">
+    <a href="/" class="back">←</a>
+    <h2>New Prediction</h2>
+  </div>
+
+  <!-- Organ Tabs -->
+  <div class="tabs">
+    <a href="/kidney">Kidney</a>
+    <button class="active">Liver</button>
+    <a href="/heart">Heart</a>
+    <a href="/lung">Lung</a>
+  </div>
+
+  <h3>Enter Liver Transplant Data</h3>
+
+  <form method="POST" action="/predict/liver" class="grid-form">
+
+    <div class="row">
+      <input type="number" placeholder="Age (e.g. 52)" name="age">
+      <input type="number" step="any" placeholder="BMI (e.g. 26)" name="bmi">
+    </div>
+
+    <input type="text" placeholder="Blood Type (e.g. O+)" name="blood_type">
+    <input type="number" step="any" placeholder="MELD Score" name="meld_score">
+
+    <div class="row">
+      <input type="text" placeholder="Bilirubin (mg/dL)" name="bilirubin">
+      <input type="text" placeholder="INR" name="inr">
+    </div>
+
+    <input type="number" step="any" placeholder="Creatinine (mg/dL)" name="creatinine">
+
+    <button type="submit" class="submit-btn">Get Prediction</button>
+
+  </form>
+
+</div>
+
+</body>
+</html>
