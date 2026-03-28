@@ -1,0 +1,5 @@
+{
+  "name": "ML Model Predictor",
+  "description": "A basic React frontend for a generic machine learning model prediction.",
+  "requestFramePermissions": []
+}
