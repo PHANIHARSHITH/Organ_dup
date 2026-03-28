@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lung Prediction</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='prediction.css') }}">
+</head>
+<body>
+
+<div class="app">
+
+  <div class="header">
+    <a href="/" class="back">←</a>
+    <h2>New Prediction</h2>
+  </div>
+
+  <div class="tabs">
+    <a href="/kidney">Kidney</a>
+    <a href="/liver">Liver</a>
+    <a href="/heart">Heart</a>
+    <button class="active">Lung</button>
+  </div>
+
+  <h3>Enter Lung Transplant Data</h3>
+
+  <form method="POST" action="/predict/lung" class="grid-form">
+
+    <!-- ── DONOR ─────────────────────────────────────────────── -->
+    <h4 class="section-label">Donor Information</h4>
+
+    <div class="row">
+      <input type="number" placeholder="Donor Age" name="Donor_Age" required>
+      <input type="number" step="any" placeholder="Donor Lung Capacity (L)" name="Donor_Lung_Capacity" required>
+    </div>
+
+    <div class="row">
+      <select name="Donor_Gender">
+        <option value="">Donor Gender</option>
+        <option>Male</option>
+        <option>Female</option>
+      </select>
+      <select name="Donor_Blood_Type">
+        <option value="">Donor Blood Type</option>
+        <option>A</option>
+        <option>B</option>
+        <option>AB</option>
+        <option>O</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <select name="Donor_HLA_A">
+        <option value="">Donor HLA-A</option>
+        <option>A1</option>
+        <option>A2</option>
+        <option>A3</option>
+        <option>A24</option>
+      </select>
+      <select name="Donor_HLA_B">
+        <option value="">Donor HLA-B</option>
+        <option>B7</option>
+        <option>B8</option>
+        <option>B27</option>
+        <option>B44</option>
+      </select>
+    </div>
+
+    <select name="Donor_HLA_DR">
+      <option value="">Donor HLA-DR</option>
+      <option>DR4</option>
+      <option>DR7</option>
+      <option>DR15</option>
+      <option>DR17</option>
+    </select>
+
+    <select name="Donor_Smoking_History">
+      <option value="">Donor Smoking History</option>
+      <option>Never</option>
+      <option>Former</option>
+      <option>Current</option>
+    </select>
+
+    <select name="Donor_Medical_History">
+      <option value="">Donor Medical History</option>
+      <option>None</option>
+      <option>Hypertension</option>
+      <option>Diabetes</option>
+      <option>Asthma</option>
+      <option>COPD</option>
+    </select>
+
+    <!-- ── RECIPIENT ──────────────────────────────────────────── -->
+    <h4 class="section-label">Recipient Information</h4>
+
+    <div class="row">
+      <input type="number" placeholder="Recipient Age" name="Recipient_Age" required>
+      <input type="number" step="any" placeholder="Recipient Lung Capacity (L)" name="Recipient_Lung_Capacity" required>
+    </div>
+
+    <div class="row">
+      <select name="Recipient_Gender">
+        <option value="">Recipient Gender</option>
+        <option>Male</option>
+        <option>Female</option>
+      </select>
+      <select name="Recipient_Blood_Type">
+        <option value="">Recipient Blood Type</option>
+        <option>A</option>
+        <option>B</option>
+        <option>AB</option>
+        <option>O</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <select name="Recipient_HLA_A">
+        <option value="">Recipient HLA-A</option>
+        <option>A1</option>
+        <option>A2</option>
+        <option>A3</option>
+        <option>A24</option>
+      </select>
+      <select name="Recipient_HLA_B">
+        <option value="">Recipient HLA-B</option>
+        <option>B7</option>
+        <option>B8</option>
+        <option>B27</option>
+        <option>B44</option>
+      </select>
+    </div>
+
+    <select name="Recipient_HLA_DR">
+      <option value="">Recipient HLA-DR</option>
+      <option>DR4</option>
+      <option>DR7</option>
+      <option>DR15</option>
+      <option>DR17</option>
+    </select>
+
+    <select name="Recipient_Medical_History">
+      <option value="">Recipient Medical History</option>
+      <option>None</option>
+      <option>Hypertension</option>
+      <option>Diabetes</option>
+      <option>Asthma</option>
+      <option>COPD</option>
+    </select>
+
+    <select name="Recipient_Oxygen_Support">
+      <option value="">Oxygen Support</option>
+      <option>None</option>
+      <option>Nasal Cannula</option>
+      <option>Ventilator</option>
+    </select>
+
+    <select name="Recipient_Urgency_Level">
+      <option value="">Urgency Level</option>
+      <option>Low</option>
+      <option>Medium</option>
+      <option>High</option>
+    </select>
+
+
+
+    <button type="submit" class="submit-btn">Get Prediction</button>
+
+  </form>
+
+</div>
+
+</body>
+</html>

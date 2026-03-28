@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Liver Prediction</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='prediction.css') }}">
+</head>
+<body>
+
+<div class="app">
+
+  <div class="header">
+    <a href="/" class="back">←</a>
+    <h2>New Prediction</h2>
+  </div>
+
+  <div class="tabs">
+    <a href="/kidney">Kidney</a>
+    <button class="active">Liver</button>
+    <a href="/heart">Heart</a>
+    <a href="/lung">Lung</a>
+  </div>
+
+  <h3>Enter Liver Transplant Data</h3>
+
+  <form method="POST" action="/predict/liver" class="grid-form">
+
+    <!-- ── DONOR ─────────────────────────────────────────────── -->
+    <h4 class="section-label">Donor Information</h4>
+
+    <div class="row">
+      <input type="number" placeholder="Donor Age" name="Donor Age" required>
+      <input type="number" step="any" placeholder="Donor BMI" name="Donor BMI" required>
+    </div>
+
+    <div class="row">
+      <select name="Donor Gender">
+        <option value="">Donor Gender</option>
+        <option>Male</option>
+        <option>Female</option>
+      </select>
+      <select name="Donor Blood Type">
+        <option value="">Donor Blood Type</option>
+        <option>A</option>
+        <option>B</option>
+        <option>AB</option>
+        <option>O</option>
+      </select>
+    </div>
+
+    <select name="Donor Type">
+      <option value="">Donor Type</option>
+      <option>Deceased - Brain Death (DBD)</option>
+      <option>Deceased - Cardiac Death (DCD)</option>
+      <option>Living Donor</option>
+    </select>
+
+    <select name="Donor Cause of Death">
+      <option value="">Donor Cause of Death</option>
+      <option>Traumatic Brain Injury</option>
+      <option>Stroke/CVA</option>
+      <option>Anoxia</option>
+      <option>Drug Intoxication</option>
+      <option>CNS Tumor</option>
+      <option>Other</option>
+      <option>Living</option>
+    </select>
+
+    <div class="row">
+      <input type="number" step="any" placeholder="Donor ALT (U/L)" name="Donor ALT">
+      <input type="number" step="any" placeholder="Donor AST (U/L)" name="Donor AST">
+    </div>
+
+    <div class="row">
+      <input type="number" step="any" placeholder="Donor Bilirubin (mg/dL)" name="Donor Bilirubin">
+      <input type="number" step="any" placeholder="Donor GGT (U/L)" name="Donor GGT">
+    </div>
+
+    <div class="row">
+      <input type="number" step="any" placeholder="Donor Sodium (mEq/L)" name="Donor Sodium">
+      <input type="number" step="any" placeholder="Steatosis (%)" name="Donor Steatosis Pct">
+    </div>
+
+    <div class="row">
+      <input type="number" step="any" placeholder="ICU Stay (days)" name="Donor ICU Stay Days">
+      <input type="number" step="any" placeholder="Cold Ischemia Time (hrs)" name="Cold Ischemia Time hrs">
+    </div>
+
+    <select name="Graft Type">
+      <option value="">Graft Type</option>
+      <option>Whole Liver</option>
+      <option>Right Lobe</option>
+      <option>Left Lobe</option>
+      <option>Left Lateral Segment</option>
+    </select>
+
+    <!-- ── RECIPIENT ──────────────────────────────────────────── -->
+    <h4 class="section-label">Recipient Information</h4>
+
+    <div class="row">
+      <input type="number" placeholder="Recipient Age" name="Recipient Age" required>
+      <input type="number" step="any" placeholder="Recipient BMI" name="Recipient BMI" required>
+    </div>
+
+    <div class="row">
+      <select name="Recipient Gender">
+        <option value="">Recipient Gender</option>
+        <option>Male</option>
+        <option>Female</option>
+      </select>
+      <select name="Recipient Blood Type">
+        <option value="">Recipient Blood Type</option>
+        <option>A</option>
+        <option>B</option>
+        <option>AB</option>
+        <option>O</option>
+      </select>
+    </div>
+
+    <select name="Recipient Diagnosis">
+      <option value="">Recipient Diagnosis</option>
+      <option>NASH Cirrhosis</option>
+      <option>Hepatitis C Cirrhosis</option>
+      <option>Alcoholic Cirrhosis</option>
+      <option>Hepatocellular Carcinoma</option>
+      <option>Cryptogenic Cirrhosis</option>
+      <option>Primary Biliary Cholangitis</option>
+      <option>Acute Liver Failure</option>
+      <option>Alpha-1 Antitrypsin Deficiency</option>
+      <option>Autoimmune Hepatitis</option>
+      <option>Wilson Disease</option>
+    </select>
+
+    <input type="number" placeholder="MELD Score (6–40)" name="Recipient MELD Score" min="6" max="40" required>
+
+    <div class="row">
+      <input type="number" step="any" placeholder="Recipient Bilirubin (mg/dL)" name="Recipient Bilirubin">
+      <input type="number" step="any" placeholder="Recipient ALT (U/L)" name="Recipient ALT">
+    </div>
+
+    <div class="row">
+      <input type="number" step="any" placeholder="Recipient AST (U/L)" name="Recipient AST">
+      <input type="number" step="any" placeholder="Albumin (g/dL)" name="Recipient Albumin">
+    </div>
+
+    <div class="row">
+      <input type="number" step="any" placeholder="INR" name="Recipient INR">
+      <input type="number" step="any" placeholder="Creatinine (mg/dL)" name="Recipient Creatinine">
+    </div>
+
+    <input type="number" placeholder="Waitlist Days" name="Recipient Waitlist Days">
+
+    <div class="row">
+      <select name="Recipient Ascites">
+        <option value="">Ascites</option>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+      <select name="Recipient Encephalopathy">
+        <option value="">Encephalopathy</option>
+        <option>Grade 1-2</option>
+        <option>Grade 3-4</option>
+        <option>Unknown</option>
+      </select>
+    </div>
+
+    <select name="Recipient On Dialysis">
+      <option value="">On Dialysis</option>
+      <option>Yes</option>
+      <option>No</option>
+    </select>
+
+    <button type="submit" class="submit-btn">Get Prediction</button>
+
+  </form>
+
+</div>
+
+</body>
+</html>
